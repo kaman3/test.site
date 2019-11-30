@@ -36,16 +36,36 @@
         }else{
            return 'Переменная не является объектом или не определенна';
         }  	
-    }
+	}
+	// собираем ballon для точек на карте
+	createTemplateBallon(idObject, dataGeoPoint, maxPeriodDelivery){
+         console.log(dataGeoPoint);
+	}
+	// создаем меню
+	createMapMenu(dataGeoPoint){
+
+		let submenuItem = '';
+		
+		if(typeof dataGeoPoint !== undefined && Object.keys(dataGeoPoint.pointPvz).length > 0){
+
+			dataGeoPoint.pointPvz.forEach((element) => {
+				submenuItem += '<li class = "point" id = "'+ element.id +'" data_id_cse = "'+element.guid+'">'+ element.adress + '</li>';
+			});
+		
+			return (typeof submenuItem == 'string' && submenuItem.length > 0) ? submenuItem : submenuItem = 'В вашем городе нет точек самовывоза';
+
+		}else{
+			return false;
+		}
+	}
 }
 // стартуем main
 (async (startCity = 'пенза') => {
-
+	
+	let app     = new PvzService;
 	let listPvz = Object; 
-
+	
 	try{
-
-		let app = new PvzService;
 
 		let valuePostRequest = {
 			start_city:startCity,
@@ -68,7 +88,20 @@
 
 	// проверяем готовы вы данные для работы/построения карты
 	if(Object.keys(listPvz.pointPvz).length > 0 && typeof listPvz.pointPvz){
-		console.log(listPvz);
+		
+		// подготавливаем данные для карты
+		try{
+			let menu = app.createMapMenu(listPvz);
+		   
+			if(menu.length > 0){
+				document.querySelector(".preLoader.Error").style.display = "none";
+				document.querySelector('.submenu').innerHTML = menu;
+			}
+
+		}catch(error){
+            console.log(new Error(`Error ${error}`));
+		}
+		
 	}else{
 		console.log("В этом городе нет точек самовывоза");
 	}
