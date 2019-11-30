@@ -148,11 +148,11 @@
     	document.querySelector("#map").innerHTML = '';
     	document.querySelector(".submenu").innerHTML = '';
 
-    	var centerMaps = dataGeoPoint.centerMaps.centerMaps.split(',');
+    	let centerMaps = dataGeoPoint.centerMaps.centerMaps.split(',');
 
     	return function(){
          
-	         var myMap = new ymaps.Map("map", {
+	         let myMap = new ymaps.Map("map", {
 		         center: [centerMaps[0],centerMaps[1]],
 		         zoom: 11,
 		         controls: [],
@@ -199,7 +199,8 @@
                      
                       let idListElement = adress.getAttribute('id');
 
-                      var zoomMap = myMap.getZoom();
+					  let zoomMap = myMap.getZoom();
+					  
                       if(zoomMap < 16){
                          myMap.setZoom( 16 );
                       }
@@ -221,7 +222,7 @@
               // click ballon active element on lists menu right
 			  myMap.geoObjects.events.add('click', function(e){
                  
-                 var eMap = e.get('objectId');
+                 let eMap = e.get('objectId');
 
                  document.querySelectorAll('li.point').forEach(function(el, index){
                     el.classList.remove("active");
@@ -400,7 +401,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// поиск по улицам
 	document.querySelector('input[name="sStreet"]').addEventListener('keyup', function(){
-		var search = this.value.toUpperCase();
+		let search = this.value.toUpperCase();
 		document.querySelectorAll("ul.submenu li").forEach(function(element, index){
 			if(element.innerText.toUpperCase().includes(search)){
 				element.style.display = 'block';
@@ -555,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // вычисление координат элемента
 function getCoords(elem) { 
-	var box = elem.getBoundingClientRect();
+	let box = elem.getBoundingClientRect();
 
 	return {
 	  top: box.top + pageYOffset,
