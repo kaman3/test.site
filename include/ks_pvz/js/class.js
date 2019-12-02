@@ -222,7 +222,11 @@
               // click ballon active element on lists menu right
 			  myMap.geoObjects.events.add('click', function(e){
                  
-                 let eMap = e.get('objectId');
+				 let eMap = e.get('objectId');
+				//  console.log(e.originalEvent.currentTarget._map.balloon._balloon); //._data.geoObjects
+				//  console.log(e.get);
+                 //console.log(`id Точки ${eMap}`);
+				 console.log(e.get('target'));
 
                  document.querySelectorAll('li.point').forEach(function(el, index){
                     el.classList.remove("active");
@@ -242,24 +246,24 @@
                 } 
               });
               
-              // if on 1 ballon be contained many elements
-              document.querySelectorAll('.bHeader').forEach(function(element, index){
-                   element.addEventListener('click', () => {
-                   	    
-                   	    document.querySelectorAll('li.point').forEach(function(point, index_point){
-                              point.classList.remove("active");
-                        });
-                        document.querySelector('li.point[id="'+eMap+'"]').classList.add('active');
+            //   // if on 1 ballon be contained many elements
+            //   document.querySelectorAll('.bHeader').forEach(function(element, index){
+            //        element.addEventListener('click', () => {
+            //        	    console.log(2222222);
+            //        	    document.querySelectorAll('li.point').forEach(function(point, index_point){
+            //                   point.classList.remove("active");
+            //             });
+            //             document.querySelector('li.point[id="'+eMap+'"]').classList.add('active');
 
-                   });
-              });
+            //        });
+            //   });
                     
         }
     }
 
 }
 // стартуем main
-async function map(startCity = 'пенза'){
+async function map(startCity = 'санкт-петербург'){
 //(async (startCity = 'пенза') => {
 	
 	let app       = new PvzService;
@@ -289,19 +293,24 @@ async function map(startCity = 'пенза'){
 
 	// проверяем готовы вы данные для работы/построения карты
 	if(Object.keys(listPvz.pointPvz).length > 0 && typeof listPvz.pointPvz){
+
+		// рисуем карту, но только на пк - мобильные не загружаем
+		if(window.innerWidth > 980){
 		
-		// создаем гео объект для размещения на карте
-		try{
-		    geoObject = await app.createGeoObject(listPvz);
-		}catch(error){
-            console.log(new Error(`Данные о расположении точек не были получены`));
-		}
+			// создаем гео объект для размещения на карте
+			try{
+				geoObject = await app.createGeoObject(listPvz);
+			}catch(error){
+				console.log(new Error(`Данные о расположении точек не были получены`));
+			}
 
-		// рисуем карту
-		if(typeof geoObject == 'object'){
-			new ymaps.ready(app.createMap(listPvz, geoObject));
-		}
+			// создаем карту
+			if(typeof geoObject == 'object'){
+				new ymaps.ready(app.createMap(listPvz, geoObject));
+			}
 
+		}
+		
 		try{
 			
 			let menu = app.createMapMenu(listPvz);
@@ -467,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				  if(e.target.innerText){
 						map(e.target.innerText);
 						document.querySelector(".select-city").style.display = 'none';
-						//console.log(e.target.innerText);
+						document.querySelector(".thisCity").innerHTML = e.target.innerText;
 				  } 
 		   }
 		   // переносим данные выбранной точки в форму
@@ -476,7 +485,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				 let guid   = document.querySelector(".point.active").getAttribute('data_id_cse');
 				 let adress = document.querySelector(".point.active").innerText; 
 				 let id     = document.querySelector(".point.active").id;
-
+                 
 				 let paymentCash = document.querySelector('.dpoint[id="'+ id +'"] > div > #paymentCash').innerText;
 				 let paymentCard = document.querySelector('.dpoint[id="'+ id +'"] > div > #paymentCard').innerText;
 				 let fieldAdminPayment = '| '+ paymentCash +' | '+ paymentCard +'|';
@@ -518,6 +527,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
 				 
 		   }
+
+		   // если в одном балуне 2 точки
+		   if(e.target.classList.contains("bHeader")){
+			
+			   document.querySelectorAll('li.point').forEach(function(el, index){
+				  el.classList.remove("active");
+			   });
+
+			   document.querySelector(".point[id='"+e.target.id+"']").classList.add('active');
+
+			   document.querySelector('ul.submenu').scrollTo(0,0);
+	                 
+			   let itemTop = document.querySelector('li.point[id="'+e.target.id+'"]').offsetTop;
+					
+			   if(itemTop != undefined && itemTop >= 147){
+				  let newHeight = itemTop - 147 - (parseInt(document.querySelector('ul.submenu').offsetHeight) / 2);
+				  document.querySelector('ul.submenu').scrollTo(newHeight,newHeight);
+			   }
+			   //console.log(e.target.id);
+		   } 
 	 // при клики по блоку с адресом покажем подробное описание, работает только на мобильном
 	 if(e.target.classList.contains("point") && e.target.id != undefined && width < 980){
 		
