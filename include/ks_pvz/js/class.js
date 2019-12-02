@@ -225,7 +225,7 @@
 				 let eMap = e.get('objectId');
 				//  console.log(e.originalEvent.currentTarget._map.balloon._balloon); //._data.geoObjects
 				//  console.log(e.get);
-                 //console.log(`id Точки ${eMap}`);
+                                 console.log(`id Точки ${eMap}`);
 				 console.log(e.get('target'));
 
                  document.querySelectorAll('li.point').forEach(function(el, index){
