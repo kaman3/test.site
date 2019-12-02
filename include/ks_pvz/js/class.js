@@ -301,7 +301,7 @@ async function map(startCity = 'пенза'){
 		if(typeof geoObject == 'object'){
 			new ymaps.ready(app.createMap(listPvz, geoObject));
 		}
-		// подготавливаем данные для карты
+
 		try{
 			
 			let menu = app.createMapMenu(listPvz);
