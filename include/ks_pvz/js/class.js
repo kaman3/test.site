@@ -188,8 +188,9 @@
 	          myMap.options.set({
 	            balloonMaxWidth: 650,
 	            balloonMaxHeight:500,
-	          });
-
+			  });
+			  
+			  document.querySelector(".modalDialog > div").style.opacity = 1; // показать что карта загрузилась, начало загрузки строка 274
 
 	          // управление элементами карты
 
@@ -223,9 +224,9 @@
 			  myMap.geoObjects.events.add('click', function(e){
                  
 				 let eMap = e.get('objectId');
-				//  console.log(e.originalEvent.currentTarget._map.balloon._balloon); //._data.geoObjects
-				//  console.log(e.get);
-                                 console.log(`id Точки ${eMap}`);
+				 //  console.log(e.originalEvent.currentTarget._map.balloon._balloon); //._data.geoObjects
+				 //  console.log(e.get);
+                 //  console.log(`id Точки ${eMap}`);
 				 console.log(e.get('target'));
 
                  document.querySelectorAll('li.point').forEach(function(el, index){
@@ -259,19 +260,19 @@
             //   });
                     
         }
-    }
-
+	}
+	
 }
 // стартуем main
 async function map(startCity = 'санкт-петербург'){
-//(async (startCity = 'пенза') => {
 	
 	let app       = new PvzService;
 	let listPvz   = Object; 
 	let geoObject = Object;
 	
 	try{
-
+		document.querySelector(".modalDialog > div").style.opacity = 0.6;
+		
 		let valuePostRequest = {
 			start_city:startCity,
 		}
@@ -318,6 +319,10 @@ async function map(startCity = 'санкт-петербург'){
 			if(menu.length > 0){
 				document.querySelector(".preLoader.Error").style.display = "none";
 				document.querySelector('.submenu').innerHTML = menu;
+				if(window.innerWidth < 980) {
+				   document.querySelector(".modalDialog > div").style.opacity = 1;
+				   console.log('Мобильная версия');
+				}
 			}
 
 		}catch(error){
@@ -336,8 +341,23 @@ async function map(startCity = 'санкт-петербург'){
 map();
 
 
+
+
 document.addEventListener("DOMContentLoaded", function() { 
-      
+
+	//   let observer = new MutationObserver(mutationRecords => {
+	// 	console.log(mutationRecords); // console.log(изменения)
+	//   });
+	  
+	//   // наблюдать за всем, кроме атрибутов
+	//   observer.observe(openModal, {
+	// 	childList: true, // наблюдать за непосредственными детьми
+	// 	subtree: true, // и более глубокими потомками
+	// 	characterDataOldValue: true // передавать старое значение в колбэк
+	//   });
+
+	  //console.log(mutationObserver);
+
 	document.querySelector('.deliveryItem').addEventListener('change', () => {
 	   let valueDelivery = document.querySelector('[name=DELIVERY_ID]:checked').value;
 	   if(valueDelivery != 52){
