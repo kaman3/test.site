@@ -189,45 +189,33 @@
 	          myMap.options.set({
 	            balloonMaxWidth: 650,
 	            balloonMaxHeight:500,
-	          });
-
-
-	          // управление элементами карты
-
-	          // open ballon on maps
-			  document.querySelectorAll('li.point').forEach(function(adress, index){
-			      adress.addEventListener('click', () => {
-                     
-                      let idListElement = adress.getAttribute('id');
-
-					  let zoomMap = myMap.getZoom();
-					  
-                      if(zoomMap < 16){
-                         myMap.setZoom( 16 );
-                      }
-                      myMap.setCenter(objectManager.objects.getById(idListElement).geometry.coordinates );
-
-                      if (!objectManager.objects.balloon.isOpen(idListElement)) {
-                           objectManager.objects.balloon.open(idListElement);
-
-                          document.querySelectorAll('li.point').forEach(function(el, index){ el.classList.remove("active"); });
-                          adress.classList.add('active');
-  
-                      }else{
-                          objectManager.objects.balloon.close(idListElement);
-                      }
-			      
-			      });
 			  });
+			  
+			  document.querySelector('ul.submenu').onclick = (e) => {
+				let idListElement = e.target.id
+				let zoomMap = myMap.getZoom();
+				
+				 if(zoomMap < 16){
+				   myMap.setZoom( 16 );
+				 }
+				 
+				 myMap.setCenter(objectManager.objects.getById(idListElement).geometry.coordinates );
 
+				 if (!objectManager.objects.balloon.isOpen(idListElement)) {
+					objectManager.objects.balloon.open(idListElement);
+
+					document.querySelectorAll('li.point').forEach(function(el, index){ el.classList.remove("active"); });
+					e.target.classList.add('active');
+
+				 }else{
+					objectManager.objects.balloon.close(idListElement);
+				 }
+
+			  }
               // click ballon active element on lists menu right
 			  myMap.geoObjects.events.add('click', function(e){
                  
 				 let eMap = e.get('objectId');
-				//  console.log(e.originalEvent.currentTarget._map.balloon._balloon); //._data.geoObjects
-				//  console.log(e.get);
-                                 console.log(`id Точки ${eMap}`);
-				 console.log(e.get('target'));
 
                  document.querySelectorAll('li.point').forEach(function(el, index){
                     el.classList.remove("active");
@@ -307,35 +295,37 @@ async function map(startCity = 'пенза'){
 
 			// создаем карту
 			if(typeof geoObject == 'object'){
-				new ymaps.ready(app.createMap(listPvz, geoObject));
+				ymaps.ready(app.createMap(listPvz, geoObject));
 			}
 
 		}
 		
 		try{
-			
+			// создаем меню (список точек)
 			let menu = app.createMapMenu(listPvz);
-
-			// menu.forEach(function(value){
-			// 	console.log(value);
-			// });
-			let i = 0;
 			let count = Object.keys(menu).length;
-			console.log(count);
-	        setInterval(() => {
-				let div = document.querySelector('ul.submenu');
-				div.insertAdjacentHTML('afterbegin', menu[i]);
-				if(i <= count){
-				   i++;
-				}
-				
-			},1000);		
-		   
-			// if(menu.length > 0){
-			// 	document.querySelector(".preLoader.Error").style.display = "none";
-			// 	document.querySelector('.submenu').innerHTML = menu;
-			// }
+			
+            if(count > 0){
 
+				document.querySelector('ul.submenu').innerHTML = '';
+				let i = 0;
+				let timerId  = setInterval(() => {
+					let div = document.querySelector('ul.submenu');
+					div.insertAdjacentHTML('beforeend', menu[i]);
+					if(i < count-1){
+					   i++;
+					}else{
+					   clearTimeout(timerId);
+					   document.querySelector(".preLoader.Error").style.display = "none";
+					}
+					
+				},5);
+
+			}else{
+				console.log(new Error(`Ошибка, нет точек для отображения`));
+			}
+
+			
 		}catch(error){
             console.log(new Error(`Error ${error}`));
 		}
@@ -345,7 +335,6 @@ async function map(startCity = 'пенза'){
 	}else{
 		console.log("В этом городе нет точек самовывоза");
 	}
- 
 
 };
 
@@ -563,6 +552,30 @@ document.addEventListener("DOMContentLoaded", function() {
 			   }
 			   //console.log(e.target.id);
 		   } 
+
+		// // выбираем точку самовывоза из списка
+		// if(e.target.classList.contains("point")){
+			
+		//    let idListElement = e.target.id;
+		//    let zoomMap = myMap.getZoom();
+
+		//    if(zoomMap < 16){
+		// 	  myMap.setZoom( 16 );
+		//    }
+		//    myMap.setCenter(objectManager.objects.getById(idListElement).geometry.coordinates );
+
+		// 	if (!objectManager.objects.balloon.isOpen(idListElement)) {
+		// 		objectManager.objects.balloon.open(idListElement);
+
+		// 		document.querySelectorAll('li.point').forEach(function(el, index){ el.classList.remove("active"); });
+		// 		adress.classList.add('active');
+
+		// 	}else{
+		// 		objectManager.objects.balloon.close(idListElement);
+		// 	}
+				
+		// }
+		   
 	 // при клики по блоку с адресом покажем подробное описание, работает только на мобильном
 	 if(e.target.classList.contains("point") && e.target.id != undefined && width < 980){
 		
@@ -588,6 +601,8 @@ document.addEventListener("DOMContentLoaded", function() {
 			 document.querySelector(".point[id='"+id+"']").classList.remove('active');
 		}
 	 }
+
+	 //console.log(e.target);
 	 // кнопка отмена - закрыает блок подробного описания у точки самовывоза на мобильной версии 
 	 if(e.target.classList.contains("btnCloseBallon")){
 		let id = e.target.parentElement.parentElement.parentElement.id;
