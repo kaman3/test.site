@@ -103,16 +103,17 @@
 	// создаем меню
 	createMapMenu(dataGeoPoint){
 
-		let submenuItem = '';
+		let submenuItem = [];
 		
 		if(typeof dataGeoPoint !== undefined && Object.keys(dataGeoPoint.pointPvz).length > 0){
 
 			dataGeoPoint.pointPvz.forEach((element) => {
 				let setTemplateBallon = this.createTemplateBallon(element.id, element, dataGeoPoint.deliveryTime.maxPeriod);
-				submenuItem += '<li class = "point" id = "'+ element.id +'" data_id_cse = "'+element.guid+'">'+ element.adress + '</li><div class = "dpoint" id = "'+ element.id +'">'+setTemplateBallon.body+'</div>';
+				submenuItem.push('<li class = "point" id = "'+ element.id +'" data_id_cse = "'+element.guid+'">'+ element.adress + '</li><div class = "dpoint" id = "'+ element.id +'">'+setTemplateBallon.body+'</div>');
 			});
 		
-			return (typeof submenuItem == 'string' && submenuItem.length > 0) ? submenuItem : submenuItem = 'В вашем городе нет точек самовывоза';
+			//return (typeof submenuItem == 'object' && submenuItem.length > 0) ? submenuItem : submenuItem = 'В вашем городе нет точек самовывоза';
+			return submenuItem;
 
 		}else{
 			return false;
@@ -263,7 +264,7 @@
 
 }
 // стартуем main
-async function map(startCity = 'санкт-петербург'){
+async function map(startCity = 'пенза'){
 //(async (startCity = 'пенза') => {
 	
 	let app       = new PvzService;
@@ -314,11 +315,26 @@ async function map(startCity = 'санкт-петербург'){
 		try{
 			
 			let menu = app.createMapMenu(listPvz);
+
+			// menu.forEach(function(value){
+			// 	console.log(value);
+			// });
+			let i = 0;
+			let count = Object.keys(menu).length;
+			console.log(count);
+	        setInterval(() => {
+				let div = document.querySelector('ul.submenu');
+				div.insertAdjacentHTML('afterbegin', menu[i]);
+				if(i <= count){
+				   i++;
+				}
+				
+			},1000);		
 		   
-			if(menu.length > 0){
-				document.querySelector(".preLoader.Error").style.display = "none";
-				document.querySelector('.submenu').innerHTML = menu;
-			}
+			// if(menu.length > 0){
+			// 	document.querySelector(".preLoader.Error").style.display = "none";
+			// 	document.querySelector('.submenu').innerHTML = menu;
+			// }
 
 		}catch(error){
             console.log(new Error(`Error ${error}`));
