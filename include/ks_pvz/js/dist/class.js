@@ -39,7 +39,7 @@ var PvzService = function () {
 					if (request.status == 200) {
 						resolve(request.response);
 					} else {
-						reject(new Error('Ошибка, данные не были полученны'));
+						reject(new Error('Error, data no pull'));
 					}
 				};
 			});
@@ -55,7 +55,7 @@ var PvzService = function () {
 					query += item + "=" + object[item] + '&';
 				}return query.length > 1 ? query.substring(0, query.length - 1) : '';
 			} else {
-				return 'Переменная не является объектом или не определенна';
+				return 'The variable is not an object or not defined';
 			}
 		}
 		// собираем ballon для точек на карте
@@ -285,7 +285,7 @@ async function map() {
 
 		listPvz = await dbObject.json();
 	} catch (error) {
-		console.log(new Error("\u041E\u0448\u0438\u0431\u043A\u0430 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u044F \u0434\u0430\u043D\u043D\u044B\u0445 \u0441 \u0441\u0435\u0440\u0432\u0435\u0440\u0430 " + error));
+		console.log(new Error("Error, failed to get data " + error));
 	}
 
 	// проверяем готовы вы данные для работы/построения карты
@@ -298,7 +298,7 @@ async function map() {
 			try {
 				geoObject = await app.createGeoObject(listPvz);
 			} catch (error) {
-				console.log(new Error("\u0414\u0430\u043D\u043D\u044B\u0435 \u043E \u0440\u0430\u0441\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0438 \u0442\u043E\u0447\u0435\u043A \u043D\u0435 \u0431\u044B\u043B\u0438 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u044B"));
+				console.log(new Error("Point location not received"));
 			}
 
 			// создаем карту
@@ -327,7 +327,7 @@ async function map() {
 					}
 				}, 5);
 			} else {
-				console.log(new Error("\u041E\u0448\u0438\u0431\u043A\u0430, \u043D\u0435\u0442 \u0442\u043E\u0447\u0435\u043A \u0434\u043B\u044F \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F"));
+				console.log(new Error("Error, no points to display"));
 			}
 		} catch (error) {
 			console.log(new Error("Error " + error));
@@ -335,7 +335,7 @@ async function map() {
 
 		//delete listPvz;
 	} else {
-		console.log("В этом городе нет точек самовывоза");
+		console.log("there are no pvz points in this city");
 	}
 };
 

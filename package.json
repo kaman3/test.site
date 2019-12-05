@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel include/ks_pvz/js/src/ -d include/ks_pvz/js/dist/ --presets es2015"
+    "build": "babel include/ks_pvz/js/src/ -d include/ks_pvz/js/dist/ --presets es2015",
+    "watch": "babel include/ks_pvz/js/src/ -d include/ks_pvz/js/dist/ --presets es2015 -w"
   },
   "repository": {
     "type": "git",
