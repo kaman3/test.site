@@ -784,7 +784,7 @@ $APPLICATION->AddHeadScript('https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apik
 			</div>
 		</div>
 
-<script defer="" src="/include/ks_pvz/js/class.js" ></script> <!-- it was script_v_2 -->
+<script defer="" src="/include/ks_pvz/js/dist/class.js" ></script> <!-- it was script_v_2 -->
 <script>$('[name=DELIVERY_ID]:checked').change();</script>
 <!--<script async src="https://pay.google.com/gp/p/js/pay.js"></script>
 <script async src="https://askent-test.site/bitrix/php_interface/include/sale_payment/googlePay/js/googlePay.js"></script>-->
