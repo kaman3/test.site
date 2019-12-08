@@ -191,17 +191,6 @@
 	            balloonMaxHeight:500,
 			  });
 			  
-<<<<<<< HEAD:include/ks_pvz/js/class.js
-			  document.querySelector(".modalDialog > div").style.opacity = 1; // показать что карта загрузилась, начало загрузки строка 274
-
-	          // управление элементами карты
-
-	          // open ballon on maps
-			  document.querySelectorAll('li.point').forEach(function(adress, index){
-			      adress.addEventListener('click', () => {
-                     
-                      let idListElement = adress.getAttribute('id');
-=======
 			  document.querySelector('ul.submenu').onclick = (e) => {
 				let idListElement = e.target.id
 				let zoomMap = myMap.getZoom();
@@ -211,7 +200,6 @@
 				 }
 				 
 				 myMap.setCenter(objectManager.objects.getById(idListElement).geometry.coordinates );
->>>>>>> dist:include/ks_pvz/js/src/class.js
 
 				 if (!objectManager.objects.balloon.isOpen(idListElement)) {
 					objectManager.objects.balloon.open(idListElement);
@@ -228,13 +216,6 @@
 			  myMap.geoObjects.events.add('click', function(e){
                  
 				 let eMap = e.get('objectId');
-<<<<<<< HEAD:include/ks_pvz/js/class.js
-				 //  console.log(e.originalEvent.currentTarget._map.balloon._balloon); //._data.geoObjects
-				 //  console.log(e.get);
-                 //  console.log(`id Точки ${eMap}`);
-				 console.log(e.get('target'));
-=======
->>>>>>> dist:include/ks_pvz/js/src/class.js
 
                  document.querySelectorAll('li.point').forEach(function(el, index){
                     el.classList.remove("active");
@@ -271,12 +252,8 @@
 	
 }
 // стартуем main
-<<<<<<< HEAD:include/ks_pvz/js/class.js
-async function map(startCity = 'санкт-петербург'){
-=======
 async function map(startCity = 'пенза'){
 //(async (startCity = 'пенза') => {
->>>>>>> dist:include/ks_pvz/js/src/class.js
 	
 	let app       = new PvzService;
 	let listPvz   = Object; 
@@ -327,16 +304,6 @@ async function map(startCity = 'пенза'){
 		try{
 			// создаем меню (список точек)
 			let menu = app.createMapMenu(listPvz);
-<<<<<<< HEAD:include/ks_pvz/js/class.js
-		   
-			if(menu.length > 0){
-				document.querySelector(".preLoader.Error").style.display = "none";
-				document.querySelector('.submenu').innerHTML = menu;
-				if(window.innerWidth < 980) {
-				   document.querySelector(".modalDialog > div").style.opacity = 1;
-				   console.log('Мобильная версия');
-				}
-=======
 			let count = Object.keys(menu).length;
 			
             if(count > 0){
@@ -357,7 +324,6 @@ async function map(startCity = 'пенза'){
 
 			}else{
 				console.log(new Error(`Error, no points to display`));
->>>>>>> dist:include/ks_pvz/js/src/class.js
 			}
 
 			

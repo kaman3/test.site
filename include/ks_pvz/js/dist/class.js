@@ -270,6 +270,7 @@ async function map() {
 	var geoObject = Object;
 
 	try {
+		document.querySelector(".modalDialog > div").style.opacity = 0.6;
 
 		var valuePostRequest = {
 			start_city: startCity
@@ -342,6 +343,19 @@ async function map() {
 map();
 
 document.addEventListener("DOMContentLoaded", function () {
+
+	//   let observer = new MutationObserver(mutationRecords => {
+	// 	console.log(mutationRecords); // console.log(изменения)
+	//   });
+
+	//   // наблюдать за всем, кроме атрибутов
+	//   observer.observe(openModal, {
+	// 	childList: true, // наблюдать за непосредственными детьми
+	// 	subtree: true, // и более глубокими потомками
+	// 	characterDataOldValue: true // передавать старое значение в колбэк
+	//   });
+
+	//console.log(mutationObserver);
 
 	document.querySelector('.deliveryItem').addEventListener('change', function () {
 		var valueDelivery = document.querySelector('[name=DELIVERY_ID]:checked').value;
