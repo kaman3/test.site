@@ -260,8 +260,6 @@ async function map(startCity = 'пенза'){
 	let geoObject = Object;
 	
 	try{
-		document.querySelector(".modalDialog > div").style.opacity = 0.6;
-		
 		let valuePostRequest = {
 			start_city:startCity,
 		}
@@ -342,8 +340,6 @@ async function map(startCity = 'пенза'){
 map();
 
 
-
-
 document.addEventListener("DOMContentLoaded", function() { 
 
 	//   let observer = new MutationObserver(mutationRecords => {
@@ -385,6 +381,19 @@ document.addEventListener("DOMContentLoaded", function() {
 		document.querySelector(".select-city").style.display = 'block';
 		document.querySelector("#get_city").focus();
 	});
+	function auto_layout_keyboard(str) {
+		var replacer = {
+			"q": "й", "w": "ц", "e": "у", "r": "к", "t": "е", "y": "н", "u": "г",
+			"i": "ш", "o": "щ", "p": "з", "[": "х", "]": "ъ", "a": "ф", "s": "ы",
+			"d": "в", "f": "а", "g": "п", "h": "р", "j": "о", "k": "л", "l": "д",
+			";": "ж", "'": "э", "z": "я", "x": "ч", "c": "с", "v": "м", "b": "и",
+			"n": "т", "m": "ь", ",": "б", ".": "ю", "/": "."
+		};
+
+		return str.replace(/[A-z/,.;\'\]\[]/g, function (x) {
+			return x == x.toLowerCase() ? replacer[x] : replacer[x.toLowerCase()].toUpperCase();
+		});
+	}
 	// поиск города из доступных в списке
 	document.querySelector("#get_city").addEventListener('keyup', function(){
 		
@@ -399,7 +408,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		  request.addEventListener("readystatechange", () => {
 				if(request.readyState === 4 && request.status === 200) {    
 					
-				   let regex  = new RegExp(this.value,'i');
+				   let regex  = new RegExp(auto_layout_keyboard(this.value),'i');
 
 				   let output = '';
 
@@ -431,7 +440,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// поиск по улицам
 	document.querySelector('input[name="sStreet"]').addEventListener('keyup', function(){
-		let search = this.value.toUpperCase();
+		let search = auto_layout_keyboard(this.value.toUpperCase());
 		document.querySelectorAll("ul.submenu li").forEach(function(element, index){
 			if(element.innerText.toUpperCase().includes(search)){
 				element.style.display = 'block';
