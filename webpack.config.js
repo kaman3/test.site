@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'production',
+    devtool: 'source-map',
     entry: './include/ks_pvz/js/src/class.js',
     output:{
         path: path.join(__dirname,'include/ks_pvz/js/dist/'),

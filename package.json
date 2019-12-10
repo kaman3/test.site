@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "babel include/ks_pvz/js/src/ -d include/ks_pvz/js/dist/ --presets es2015",
-    "watch": "babel include/ks_pvz/js/src/ -d include/ks_pvz/js/dist/ --presets es2015 -w"
+    "watch": "babel include/ks_pvz/js/src/ -d include/ks_pvz/js/dist/ --presets es2015 -w",
+    "dev-server": "webpack-dev-server --inline --hot"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,8 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.7.6"
